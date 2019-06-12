@@ -1,0 +1,9 @@
+spring:
+   datasource:
+      url: jdbc:mysql://127.0.0.1:3306/kemao_2?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=CST&autoReconnect=true&testOnBorrow=true
+      username: kemao_2
+      password: 1234
+   redis:
+      host: 120.79.218.123
+      port: 6379
+      database: 0
