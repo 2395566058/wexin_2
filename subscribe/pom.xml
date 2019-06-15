@@ -8,8 +8,10 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>subscribe</artifactId>
+	<description>微信的监听端。</description>
 
 	<dependencies>
+		<!-- 使用我们自己定义的模块 -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>commons</artifactId>
@@ -52,6 +54,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
+		<!-- 自动配置Spring MVC -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 		<!-- 开发者工具，用于实现热部署，在修改文件以后马上能够生效 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -91,9 +98,9 @@
 					<fork>true</fork>
 					<!-- 注意：这种启动和停止，都需要借助一个JMX端口，每个模块的JMX端口号必须不同 -->
 					<!-- 默认端口号是9001，建议每100个端口作为一段端口号分配一个人使用 -->
-					<!-- 这里选择使用10001 -->
+					<!-- 这里选择使用10000 -->
 					<!-- 端口号必须大于1024，并且小于或等于65535 -->
-					<jmxPort>10001</jmxPort>
+					<jmxPort>10000</jmxPort>
 				</configuration>
 			</plugin>
 		</plugins>
