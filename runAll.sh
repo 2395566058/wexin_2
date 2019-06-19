@@ -5,3 +5,6 @@ cd ..
 cd subscribe
 mvn  spring-boot:start
 cd ..
+cd unsubscribe
+mvn  spring-boot:start
+cd ..
