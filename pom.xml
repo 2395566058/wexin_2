@@ -11,6 +11,7 @@
 		<module>commons</module>
 		<module>subscribe</module>
 		<module>unsubscribe</module>
+		<module>library</module>
 	</modules>
 
 	<!-- 项目的属性配置 -->
