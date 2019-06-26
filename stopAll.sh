@@ -7,4 +7,7 @@ cd ..
 cd unsubscribe
 mvn  spring-boot:stop
 cd ..
+cd library
+mvn  spring-boot:stop
+cd ..
 
