@@ -14,7 +14,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public interface CommonsConfig extends CommandLineRunner, DisposableBean {
-
 	public static final Logger LOG = LoggerFactory.getLogger(CommonsConfig.class);
 
 	@Bean
@@ -24,10 +23,17 @@ public interface CommonsConfig extends CommandLineRunner, DisposableBean {
 	}
 
 	@Bean
-	public default RedisTemplate<String, ? extends InMessage> inMessageTemplate(//
+	public default RedisTemplate<String, ? extends InMessage> inMessageTemplate(
 			@Autowired RedisConnectionFactory connectionFactory) {
-
 		RedisTemplate<String, ? extends InMessage> template = new RedisTemplate<>();
+		template.setConnectionFactory(connectionFactory);
+		template.setValueSerializer(new JsonRedisSerializer());
+		return template;
+	}
+
+	@Bean
+	default <T> RedisTemplate<String, T> redisTemplate(@Autowired RedisConnectionFactory connectionFactory) {
+		RedisTemplate<String, T> template = new RedisTemplate<>();
 		template.setConnectionFactory(connectionFactory);
 		template.setValueSerializer(new JsonRedisSerializer());
 		return template;

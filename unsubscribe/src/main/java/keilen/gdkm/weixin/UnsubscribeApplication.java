@@ -39,15 +39,13 @@ public class UnsubscribeApplication
 	}
 
 	@Bean
-	public MessageListener messageListener(//
-			@Autowired //
-			@Qualifier("inMessageTemplate") //
-			RedisTemplate<String, ? extends InMessage> inMessageTemplate) {
+	public MessageListener messageListener(
+			@Autowired @Qualifier("inMessageTemplate") RedisTemplate<String, ? extends InMessage> inMessageTemplate) {
 		MessageListenerAdapter adapter = new MessageListenerAdapter(this, "handle");
 		adapter.setSerializer(inMessageTemplate.getValueSerializer());
 		return adapter;
 	};
-	
+
 	public void handle(EventInMessage msg) {
 		LOG.trace("处理信息： {}", msg);
 		String id = msg.getEvent().toLowerCase() + "MessageProcessor";
@@ -66,8 +64,7 @@ public class UnsubscribeApplication
 	}
 
 	@Bean
-	public RedisMessageListenerContainer messageListenerContainer(//
-			@Autowired RedisConnectionFactory connectionFactory, //
+	public RedisMessageListenerContainer messageListenerContainer(@Autowired RedisConnectionFactory connectionFactory,
 			@Autowired MessageListener messageListener) {
 		RedisMessageListenerContainer c = new RedisMessageListenerContainer();
 		c.setConnectionFactory(connectionFactory);

@@ -1,4 +1,4 @@
-package keilen.gdkm.weixin;
+package keilen.gdkm.weixin.processor;
 
 import java.util.Date;
 

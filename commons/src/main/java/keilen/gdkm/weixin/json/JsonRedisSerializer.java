@@ -7,23 +7,24 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-import keilen.gdkm.weixin.domain.InMessage;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JsonRedisSerializer<T> extends Jackson2JsonRedisSerializer<T> {
+public class JsonRedisSerializer extends Jackson2JsonRedisSerializer<Object> {
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 
-	@SuppressWarnings("unchecked")
 	public JsonRedisSerializer() {
-		super((Class<T>) InMessage.class);
+		super(Object.class);
 	}
 
 	@Override
-	public T deserialize(byte[] bytes) throws SerializationException{
+	public Object deserialize(byte[] bytes) throws SerializationException {
+		if (bytes == null) {
+			return null;
+		}
 		ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
 		DataInputStream in = new DataInputStream(bis);
 		try {
@@ -32,8 +33,8 @@ public class JsonRedisSerializer<T> extends Jackson2JsonRedisSerializer<T> {
 			in.readFully(classNameBytes);
 			String className = new String(classNameBytes, "UTF-8");
 			@SuppressWarnings("unchecked")
-			Class<T> cla = (Class<T>) Class.forName(className);
-			T o = objectMapper.readValue(Arrays.copyOfRange(bytes, len + 4, bytes.length), cla);
+			Class<Object> cla = (Class<Object>) Class.forName(className);
+			Object o = objectMapper.readValue(Arrays.copyOfRange(bytes, len + 4, bytes.length), cla);
 			return o;
 
 		} catch (IOException | ClassNotFoundException e) {
@@ -42,12 +43,13 @@ public class JsonRedisSerializer<T> extends Jackson2JsonRedisSerializer<T> {
 	}
 
 	@Override
-	public byte[] serialize(Object t) throws SerializationException{
+	public byte[] serialize(Object t) throws SerializationException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream(bos);
 		try {
 			String className = t.getClass().getName();
 			byte[] classNameBytes = className.getBytes();
+
 			out.writeInt(classNameBytes.length);
 			out.write(classNameBytes);
 			out.write(super.serialize(t));

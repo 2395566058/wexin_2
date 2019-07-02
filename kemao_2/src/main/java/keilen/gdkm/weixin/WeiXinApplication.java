@@ -12,18 +12,10 @@ import keilen.gdkm.weixin.domain.InMessage;
 import keilen.gdkm.weixin.service.JsonRedisSerializer;
 
 @SpringBootApplication
-public class WeiXinApplication {
+public class WeiXinApplication implements CommonsConfig{
 
 	public static void main(String[] args) {
 		SpringApplication.run(WeiXinApplication.class, args);
 	}
 
-	@Bean
-	public RedisTemplate<String, ? extends InMessage> inMessageTemplate(
-			@Autowired RedisConnectionFactory connectionFactory) {
-		RedisTemplate<String, ? extends InMessage> template = new RedisTemplate<>();
-		template.setConnectionFactory(connectionFactory);
-		template.setValueSerializer(new JsonRedisSerializer<InMessage>());
-		return template;
-	}
 }
