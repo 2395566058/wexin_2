@@ -13,4 +13,4 @@ spring:
       port: 6379
       database: 15
 server:
-   port: 8095
+   port: 8096
