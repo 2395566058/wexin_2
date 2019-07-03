@@ -12,3 +12,5 @@ spring:
       host: 120.79.218.123
       port: 6379
       database: 15
+server:
+   port: 8093
