@@ -1,41 +1,40 @@
-.book {
-	width: 100%;
+.item {
 	display: table;
-	border-bottom: 1px solid #aaa;
+	width: 100%;
+	border-bottom: 1px solid #ccc;
 }
 
-.book .col-1, .book .col-10 {
-	margin-left: 0px;
-	margin-right: 0px;
-	display: inline-block;
-	overflow: hidden;
+.item img {
+	width: 50px;
+}
+
+.item .col-1 {
 	float: left;
-}
-
-.book .col-1 {
 	width: 8%;
 }
 
-.book .col-10 {
-	width: 80%;
+.item .col-10 {
+	float: left;
+	width: 83%;
 }
 
-.book .image {
-	height: 50px;
+.buttons {
+	padding-top: 13px;
 }
 
-.book .name:hover {
-	background-color: rgba(200, 200, 200, 0.5);
-}
-
-.book .button {
-	cursor: pointer;
-	padding: 0px 20px;
-	border: 1px solid #aaa;
+.button {
+	padding: 5px 13px;
+	border-radius: 30px;
 	background-color: #aaa;
-	border-radius: 5px;
+	border: 1px solid #aaa;
 }
 
-.book .button:hover {
+.button:hover {
 	background-color: #fff;
+	cursor: pointer;
+}
+
+.item .remove {
+	float: right;
+	border: 1px solid #aaa;
 }

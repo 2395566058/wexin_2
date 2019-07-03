@@ -10,25 +10,28 @@
 </head>
 <body>
 	<form action="" method="get">
-		<input name="keyword" value="${param.keyword }" placeholder="关键字" />
+		<input name="keyword" placeholder="关键字" value="${param.keyword}" />
 		<button>搜索</button>
 	</form>
 	<c:forEach items="${page.content }" var="book">
-		<div class="book">
+		<div class="item">
 			<div class="col-1">
-				<img class="image" src="/kemao_2/library/images/${book.image }" />
+				<img src="/kemao_2/library/images/${book.image }" />
 			</div>
-			<span class="col-10 name">${book.name }</span> <span class="col-1"
-				style="text-align: right;"> <span class="button">+</span>
-			</span>
+			<div class="col-10">
+				<span>${book.name }</span>
+			</div>
+			<div class="col-1 buttons">
+				<a href="/kemao_2/library/debit?id=${book.id }" class="button">+</a>
+			</div>
 		</div>
 	</c:forEach>
 	<div>
-		<c:if test="${page.number > 0 }">
-			<a href="?pageNumber=${page.number -1 }&keyword=${param.keyword}">上一页</a>
-		</c:if>
 		<c:if test="${page.number <= 0 }">
 			<a>上一页</a>
+		</c:if>
+		<c:if test="${page.number > 0 }">
+			<a href="?pageNumber=${page.number - 1 }&keyword=${param.keyword}">上一页</a>
 		</c:if>
 		<c:choose>
 			<c:when test="${page.number >= page.totalPages - 1 }">

@@ -1,6 +1,10 @@
 package keilen.gdkm.weixin.library.service.impl;
 
+import java.util.LinkedList;
+
 import keilen.gdkm.weixin.library.domain.Book;
+import keilen.gdkm.weixin.library.domain.DebitList;
+import keilen.gdkm.weixin.library.repository.BookRepository;
 import keilen.gdkm.weixin.library.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,14 +21,35 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Override
 	public Page<Book> search(String keyword, int pageNumber) {
-		Pageable pageable = PageRequest.of(pageNumber, 3);
+		Pageable pageable = PageRequest.of(pageNumber, 10);
 		Page<Book> page;
 		if (StringUtils.isEmpty(keyword)) {
 			page = this.bookRepository.findByDisabledFalse(pageable);
 		} else {
-			page = this.bookRepository.findByNameContainingAndDisabledFalse(keyword, pageable);
+			page = this.bookRepository.findByDisabledFalseAndNameContaining(keyword, pageable);
 		}
-
 		return page;
+	}
+
+	@Override
+	public void add(String id, DebitList debitList) {
+		if (debitList.getBooks() == null) {
+			debitList.setBooks(new LinkedList<>());
+		}
+		boolean exists = false;
+		for (Book b : debitList.getBooks()) {
+			if (b.getId().equals(id)) {
+				exists = true;
+				break;
+			}
+		}
+		if (!exists) {
+			this.bookRepository.findById(id).ifPresent(debitList.getBooks()::add);
+		}
+	}
+
+	@Override
+	public void remove(String id, DebitList debitList) {
+		debitList.getBooks().stream().filter(book -> book.getId().equals(id)).findFirst().ifPresent(debitList.getBooks()::remove);
 	}
 }

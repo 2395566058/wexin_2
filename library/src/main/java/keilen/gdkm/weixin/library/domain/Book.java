@@ -1,5 +1,6 @@
 package keilen.gdkm.weixin.library.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,15 +13,15 @@ import org.hibernate.annotations.GenericGenerator;
 public class Book {
 
 	@Id
+	@Column(length = 36)
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(generator = "uuid2")
 	private String id;
-
 	private String name;
-	private int storage;
 	private String description;
-	private String image;
-	private boolean disabled;
+	private String image;// 封面图片名称
+	private int storage;// 库存量
+	private boolean disabled;// 是否已经被停用
 
 	public String getId() {
 		return id;
@@ -38,14 +39,6 @@ public class Book {
 		this.name = name;
 	}
 
-	public int getStorage() {
-		return storage;
-	}
-
-	public void setStorage(int storage) {
-		this.storage = storage;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -60,6 +53,14 @@ public class Book {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public int getStorage() {
+		return storage;
+	}
+
+	public void setStorage(int storage) {
+		this.storage = storage;
 	}
 
 	public boolean isDisabled() {
