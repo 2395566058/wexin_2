@@ -25,6 +25,7 @@ public class SubscribeEventMessageProcessor implements EventMessageProcessor {
 	public void onMessage(EventInMessage msg) {
 		LOG.trace("关注消息处理器: " + msg);
 		String account = msg.getToUserName();
+		System.out.println("account="+account);
 		String openId = msg.getFromUserName();
 		User user = this.userRepository.findByOpenId(openId);
 		if (user == null || user.getStatus() != User.Status.IS_SUBSCRIBE) {

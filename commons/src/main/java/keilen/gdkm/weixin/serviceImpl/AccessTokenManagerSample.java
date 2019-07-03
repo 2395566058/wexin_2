@@ -21,12 +21,10 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 @Service
 public class AccessTokenManagerSample implements AccessTokenManager {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AccessTokenManagerSample.class);
-
 	private ObjectMapper objectMapper = new ObjectMapper();
 
 	@Autowired
@@ -38,23 +36,39 @@ public class AccessTokenManagerSample implements AccessTokenManager {
 		String key = "wx_access_token";
 		ResponseToken token = redisTemplate.boundValueOps(key).get();
 		if (token == null) {
-			LOG.trace("数据库里面没有令牌，需要重新获取，正在获取分布式事务锁...");
-			Boolean locked = redisTemplate.boundValueOps(key + "_lock").setIfAbsent(new ResponseToken(), 1, TimeUnit.MINUTES);
-			LOG.trace("获取分布式事务锁结束，结果：{}", locked);
-			if (locked != null && locked == true) {
-				try {
-					token = redisTemplate.boundValueOps(key).get();
-					if (token == null) {
-						LOG.trace("调用远程接口获取令牌");
-						token = getRemoteToken(account);
-						redisTemplate.boundValueOps(key).set(token, token.getExpiresIn(), TimeUnit.SECONDS);
+			for (int i = 0; i < 10; i++) {
+				LOG.trace("数据库里面没有令牌，需要重新获取，正在获取分布式事务锁...");
+				Boolean locked = redisTemplate.boundValueOps(key + "_lock").setIfAbsent(new ResponseToken(), 1,
+						TimeUnit.MINUTES);
+				LOG.trace("获取分布式事务锁结束，结果：{}", locked);
+				if (locked != null && locked == true) {
+					try {
+						token = redisTemplate.boundValueOps(key).get();
+						if (token == null) {
+							LOG.trace("调用远程接口获取令牌");
+							token = getRemoteToken(account);
+							redisTemplate.boundValueOps(key).set(token, token.getExpiresIn(), TimeUnit.SECONDS);
+						}
+					} finally {
+						redisTemplate.delete(key + "_lock");
+						synchronized (this) {
+							this.notifyAll();
+						}
 					}
-				} finally {
-					redisTemplate.delete(key + "_lock");
+					break;
+				} else {
+					synchronized (this) {
+						try {
+							this.wait(60 * 1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 				}
-			} else {
-				throw new RuntimeException("没有获得事务锁，无法更新令牌");
 			}
+		}
+		if (token == null) {
+			throw new RuntimeException("无法获得访问令牌");
 		}
 		return token.getToken();
 	}
@@ -62,8 +76,8 @@ public class AccessTokenManagerSample implements AccessTokenManager {
 	private ResponseToken getRemoteToken(String account) {
 		String appid = "wx556cbe1ff0dcbe5e";
 		String appSecret = "5940598cbe4faa3bf4600a3747586a6c";
-		String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential"
-				+ "&appid=" + appid
+		String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential"//
+				+ "&appid=" + appid//
 				+ "&secret=" + appSecret;
 		HttpClient hc = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder(URI.create(url)).GET().build();
@@ -86,8 +100,7 @@ public class AccessTokenManagerSample implements AccessTokenManager {
 			throw new RuntimeException("获取访问令牌出现问题：" + e.getLocalizedMessage(), e);
 		}
 
-		throw new RuntimeException("获取访问令牌出现问题，"
-				+ "错误代码=" + ((ResponseError) msg).getErrorCode()
-				+ "，错误信息=" + ((ResponseError) msg).getErrorMessage());
+		throw new RuntimeException("获取访问令牌出现问题，" + "错误代码=" + ((ResponseError) msg).getErrorCode() + "，错误信息="
+				+ ((ResponseError) msg).getErrorMessage());
 	}
 }

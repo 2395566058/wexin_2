@@ -3,6 +3,11 @@ spring:
       url: jdbc:mysql://127.0.0.1:3306/kemao_2?useSSL=false&serverTimezone=CST&allowPublicKeyRetrieval=true
       username: kemao_2
       password: 1234
+   jpa:
+      generate-ddl: true
+      show-sql: true
+      properties:
+         hibernate.dialect: org.hibernate.dialect.MySQL57Dialect
    redis:
       host: 120.79.218.123
       port: 6379

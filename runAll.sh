@@ -8,6 +8,9 @@ cd ..
 cd unsubscribe
 mvn  spring-boot:start
 cd ..
+cd self_menu
+mvn  spring-boot:start
+cd ..
 cd library
 mvn  spring-boot:start
 cd ..
