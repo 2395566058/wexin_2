@@ -16,11 +16,9 @@ public class ImageInMessage extends InMessage {
 	private static final long serialVersionUID = 1L;
 
 	@XmlElement(name = "PicUrl")
-	@JsonProperty("PicUrl")
 	private String imageUrl;
 
 	@XmlElement(name = "MediaId")
-	@JsonProperty("MediaId")
 	private String mediaId;
 
 	public String getImageUrl() {
