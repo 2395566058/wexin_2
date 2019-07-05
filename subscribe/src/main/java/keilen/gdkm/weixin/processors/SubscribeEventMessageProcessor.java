@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 @Service("subscribeMessageProcessor")
 public class SubscribeEventMessageProcessor implements EventMessageProcessor {
-
 	private static final Logger LOG = LoggerFactory.getLogger(SubscribeEventMessageProcessor.class);
+
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -25,14 +25,13 @@ public class SubscribeEventMessageProcessor implements EventMessageProcessor {
 	public void onMessage(EventInMessage msg) {
 		LOG.trace("关注消息处理器: " + msg);
 		String account = msg.getToUserName();
-		System.out.println("account="+account);
 		String openId = msg.getFromUserName();
 		User user = this.userRepository.findByOpenId(openId);
 		if (user == null || user.getStatus() != User.Status.IS_SUBSCRIBE) {
 			User wxUser = weiXinProxy.getUser(account, openId);
 			if (wxUser == null) {
 				return;
-			} 
+			}
 			if (user != null) {
 				wxUser.setId(user.getId());
 				wxUser.setSubTime(user.getSubTime());
