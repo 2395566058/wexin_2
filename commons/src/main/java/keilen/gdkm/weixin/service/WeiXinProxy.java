@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class WeiXinProxy {
+
 	private static final Logger LOG = LoggerFactory.getLogger(WeiXinProxy.class);
 	private ObjectMapper objectMapper = new ObjectMapper();
 	@Autowired
@@ -38,6 +39,7 @@ public class WeiXinProxy {
 			HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString(Charset.forName("UTF-8")));
 			String body = response.body();
 			LOG.trace("调用远程接口返回的内容：\n{}", body);
+
 			if (!body.contains("errcode")) {
 				User user = objectMapper.readValue(body, User.class);
 				return user;
@@ -50,6 +52,7 @@ public class WeiXinProxy {
 
 	public void sendText(String account, String openId, String text) {
 		TextOutMessage out = new TextOutMessage(openId, text);
+
 		String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=";
 		try {
 			String json = this.objectMapper.writeValueAsString(out);
@@ -65,9 +68,11 @@ public class WeiXinProxy {
 	}
 
 	private void post(String url, String json) {
+
 		LOG.trace("以POST方式发送信息给微信公众号，内容：\n{}", json);
 		String accessToken = accessTokenManager.getToken(null);
 		url = url + accessToken;
+
 		HttpRequest request = HttpRequest.newBuilder(URI.create(url))
 				.POST(BodyPublishers.ofString(json, Charset.forName("UTF-8"))).build();
 		CompletableFuture<HttpResponse<String>> future = httpClient.sendAsync(request,
