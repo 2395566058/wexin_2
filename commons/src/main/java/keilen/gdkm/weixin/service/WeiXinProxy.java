@@ -34,11 +34,11 @@ public class WeiXinProxy {
 
 		String url = "https://api.weixin.qq.com/cgi-bin/user/info" + "?access_token=" + accessToken + "&openid="
 				+ openId + "&lang=zh_CN";
-		LOG.trace("发送远程内容：\n{}",url);
 		HttpRequest request = HttpRequest.newBuilder(URI.create(url)).GET().build();
 		try {
 			HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString(Charset.forName("UTF-8")));
 			String body = response.body();
+			LOG.trace("发送远程内容：\n{}",url);
 			LOG.trace("调用远程接口返回的内容：\n{}", body);
 
 			if (!body.contains("errcode")) {
