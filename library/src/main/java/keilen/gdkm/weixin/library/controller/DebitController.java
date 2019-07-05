@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping("/kemao_2/library/debit")
+@RequestMapping("/kemao/library/debit")
 @SessionAttributes({ "debitList" })
 public class DebitController {
 
