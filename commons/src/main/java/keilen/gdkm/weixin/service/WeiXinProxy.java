@@ -37,8 +37,7 @@ public class WeiXinProxy {
 		HttpRequest request = HttpRequest.newBuilder(URI.create(url)).GET().build();
 		try {
 			HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString(Charset.forName("UTF-8")));
-			String body = response.body();
-			System.out.println("url="+url);
+			String body = response.body();;
 			LOG.trace("调用远程接口返回的内容：\n{}", body);
 
 			if (!body.contains("errcode")) {
@@ -78,6 +77,7 @@ public class WeiXinProxy {
 				.POST(BodyPublishers.ofString(json, Charset.forName("UTF-8"))).build();
 		CompletableFuture<HttpResponse<String>> future = httpClient.sendAsync(request,
 				BodyHandlers.ofString(Charset.forName("UTF-8")));
+		LOG.trace("POST方式发送信息给微信公众号服务器的url：\n{}", url);
 		future.thenAccept(response -> {
 			LOG.trace("POST方式发送信息给微信公众号服务器返回的结果：\n{}", response.body());
 		});
