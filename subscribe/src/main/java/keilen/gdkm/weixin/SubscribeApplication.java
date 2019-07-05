@@ -30,6 +30,7 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 public class SubscribeApplication implements CommandLineRunner, DisposableBean, ApplicationContextAware, CommonsConfig {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SubscribeApplication.class);
+
 	private ApplicationContext ctx;
 
 	@Override
@@ -38,10 +39,8 @@ public class SubscribeApplication implements CommandLineRunner, DisposableBean, 
 	}
 
 	@Bean
-	public MessageListener messageListener(//
-			@Autowired //
-			@Qualifier("inMessageTemplate") //
-			RedisTemplate<String, ? extends InMessage> inMessageTemplate) {
+	public MessageListener messageListener(
+			@Autowired @Qualifier("inMessageTemplate") RedisTemplate<String, ? extends InMessage> inMessageTemplate) {
 		MessageListenerAdapter adapter = new MessageListenerAdapter(this, "handle");
 		adapter.setSerializer(inMessageTemplate.getValueSerializer());
 		return adapter;
@@ -65,12 +64,12 @@ public class SubscribeApplication implements CommandLineRunner, DisposableBean, 
 	}
 
 	@Bean
-	public RedisMessageListenerContainer messageListenerContainer(//
-			@Autowired RedisConnectionFactory connectionFactory, //
+	public RedisMessageListenerContainer messageListenerContainer(@Autowired RedisConnectionFactory connectionFactory,
 			@Autowired MessageListener messageListener) {
 		RedisMessageListenerContainer c = new RedisMessageListenerContainer();
 		c.setConnectionFactory(connectionFactory);
 		Topic topic = new ChannelTopic("kemao_2_event");
+
 		c.addMessageListener(messageListener, topic);
 
 		return c;

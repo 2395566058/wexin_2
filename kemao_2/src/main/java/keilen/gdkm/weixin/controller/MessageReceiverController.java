@@ -44,13 +44,11 @@ public class MessageReceiverController {
 		LOG.trace("收到消息原文：\n{}\n", xml);
 		InMessage inMessage = MessageConvertHelper.convert(xml);
 		LOG.debug("转换后的消息对象：\n{}\n", inMessage);
-		// 序列化操作
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutputStream out = new ObjectOutputStream(bos);
 		out.writeObject(inMessage);
 		byte[] data = bos.toByteArray();
-		String channel = "weixin_" + inMessage.getMsgType();
-		// 放入消息队列
+		String channel = "kemao_2_" + inMessage.getMsgType();
 		inMessaageTemplate.execute(new RedisCallback<InMessage>() {
 
 			@Override
