@@ -7,7 +7,7 @@
 <title>菜单管理</title>
 <link rel="stylesheet" href="/kemao_2/menu/css/menu.css"/>
 </head>
-<body>
+<body onload="start()">
 <div class="main-container">
     <div class="wechat-container">
         <div class="content-container"></div>
