@@ -1,6 +1,6 @@
 let menuData = {};
 $.ajax({
-	url: "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN",
+	url: "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=23_E-Njsv_JOY2TbUjkFaSb2ez7bri_EUAuyhstUT12MCAn0y0dHg7C9rog0U1s-g7AIszwvlhiTCZsoHGLosxfn9LVG_0RSKE7-qS9BVGq0TH5U5dtmqAK7gOsnZouvVzFXWZk9JOXBJIY09JqRBMcAIAEOZ",
 	method: "get",
 	dataType: "json",
 	success: function (responseData) {
