@@ -9,7 +9,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
 import keilen.gdkm.weixin.domain.InMessage;
-import keilen.gdkm.weixin.service.JsonRedisSerializer;
 
 @SpringBootApplication
 public class WeiXinApplication implements CommonsConfig{
