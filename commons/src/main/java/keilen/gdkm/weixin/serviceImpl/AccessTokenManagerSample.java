@@ -74,7 +74,7 @@ public class AccessTokenManagerSample implements AccessTokenManager {
 	}
 
 	private ResponseToken getRemoteToken(String account) {
-		String appid = "wx5a6f3036e1f7ae33";
+		String appid = "wx5a6f3036e1f7ae33"; 
 		String appSecret = "bc86da230ac2ea69f3dcf9c752da90bf";
 		String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential"//
 				+ "&appid=" + appid//
