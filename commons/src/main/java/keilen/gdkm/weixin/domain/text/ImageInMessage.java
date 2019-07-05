@@ -7,20 +7,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import keilen.gdkm.weixin.domain.InMessage;
 
-@XmlRootElement(name = "xml")
-@XmlAccessorType(XmlAccessType.FIELD) // 字段获取信息
-public class ImageInMessage extends InMessage {
-	@XmlElement(name = "PicUrl")
-	private String picUrl; // 图片链接（由系统生成）
-	@XmlElement(name = "MediaId")
-	private String mediaId; // 图片消息媒体id，可以调用获取临时素材接口拉取数据。
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-	public String getPicUrl() {
-		return picUrl;
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ImageInMessage extends InMessage {
+
+	private static final long serialVersionUID = 1L;
+
+	@XmlElement(name = "PicUrl")
+	@JsonProperty("PicUrl")
+	private String imageUrl;
+
+	@XmlElement(name = "MediaId")
+	@JsonProperty("MediaId")
+	private String mediaId;
+
+	public String getImageUrl() {
+		return imageUrl;
 	}
 
-	public void setPicUrl(String picUrl) {
-		this.picUrl = picUrl;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public String getMediaId() {
@@ -33,10 +41,8 @@ public class ImageInMessage extends InMessage {
 
 	@Override
 	public String toString() {
-		return "ImageInMessage [picUrl=" + picUrl + ", mediaId=" + mediaId + ", getToUserName()=" + getToUserName()
+		return "ImageInMessage [imageUrl=" + imageUrl + ", mediaId=" + mediaId + ", getToUserName()=" + getToUserName()
 				+ ", getFromUserName()=" + getFromUserName() + ", getCreateTime()=" + getCreateTime()
 				+ ", getMsgType()=" + getMsgType() + ", getMsgId()=" + getMsgId() + "]";
 	}
-
-
 }

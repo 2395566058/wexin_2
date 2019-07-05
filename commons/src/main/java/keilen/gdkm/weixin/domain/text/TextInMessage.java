@@ -7,11 +7,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import keilen.gdkm.weixin.domain.InMessage;
 
-@XmlRootElement(name="xml")
-@XmlAccessorType(XmlAccessType.FIELD) // 字段获取信息
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TextInMessage extends InMessage {
+
+	private static final long serialVersionUID = 1L;
+
 	@XmlElement(name = "Content")
-	private String content; // 文本消息内容
+	@JsonProperty("Content")
+	private String content;
 
 	public String getContent() {
 		return content;
@@ -27,5 +33,4 @@ public class TextInMessage extends InMessage {
 				+ getFromUserName() + ", getCreateTime()=" + getCreateTime() + ", getMsgType()=" + getMsgType()
 				+ ", getMsgId()=" + getMsgId() + "]";
 	}
-
 }

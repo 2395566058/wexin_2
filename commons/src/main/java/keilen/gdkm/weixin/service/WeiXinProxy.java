@@ -38,7 +38,7 @@ public class WeiXinProxy {
 		try {
 			HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString(Charset.forName("UTF-8")));
 			String body = response.body();
-			LOG.trace("发送远程内容：\n{}",url);
+			System.out.println("url="+url);
 			LOG.trace("调用远程接口返回的内容：\n{}", body);
 
 			if (!body.contains("errcode")) {
