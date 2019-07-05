@@ -29,6 +29,7 @@ public class JsonRedisSerializer extends Jackson2JsonRedisSerializer<Object> {
 		DataInputStream in = new DataInputStream(bis);
 		try {
 			int len = in.readInt();
+			System.out.println("len="+len);
 			byte[] classNameBytes = new byte[len];
 			in.readFully(classNameBytes);
 			String className = new String(classNameBytes, "UTF-8");
