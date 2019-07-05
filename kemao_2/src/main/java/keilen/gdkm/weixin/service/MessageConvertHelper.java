@@ -11,24 +11,42 @@ import keilen.gdkm.weixin.domain.text.*;
 
 public class MessageConvertHelper {
 
-	private static final Map<String, Class<? extends InMessage>> map = new ConcurrentHashMap<String, Class<? extends InMessage>>();
+	// 1.使用一个Map来记录消息类型和Java类型的关系
+	private static final Map<String, Class<? extends InMessage>> typeMap = new ConcurrentHashMap<>();
 	static {
-		map.put("text", TextInMessage.class);
-		map.put("image", ImageInMessage.class);
-		map.put("voice", VoiceInMessage.class);
-		map.put("video", VideoInMessage.class);
-		map.put("shortvideo", ShortvideoInMessage.class);
-		map.put("location", LocationInMessage.class);
-		map.put("link", LinkInMessage.class);
-		map.put("event",EventInMessage.class);
+		typeMap.put("text", TextInMessage.class);
+		typeMap.put("image", ImageInMessage.class);
+
+		// 其余的类型也是使用相同的方式关联起来
+		typeMap.put("vioce", TextInMessage.class);
+		typeMap.put("video", TextInMessage.class);
+		typeMap.put("location", TextInMessage.class);
+		typeMap.put("event", EventInMessage.class);
+		typeMap.put("link", TextInMessage.class);
+		typeMap.put("shortvideo", TextInMessage.class);
 	}
 
-	public static <T extends InMessage> T convert(String xml) {
-		String msgType = xml.substring(xml.indexOf("<MsgType><![CDATA[")+18);
-		msgType = msgType.substring(0, msgType.indexOf("]"));
-		Class<? extends InMessage> c = map.get(msgType);
-		T object = (T) JAXB.unmarshal(new StringReader(xml), c);
+	public static Class<? extends InMessage> getClass(String xml) {
+		// 获取类型
+		String type = xml.substring(xml.indexOf("<MsgType><![CDATA[") + 18);
+		type = type.substring(0, type.indexOf("]"));
 
-		return object;
+		// 获取Java类
+		Class<? extends InMessage> c = typeMap.get(type);
+		return c;
+	}
+
+	// 2.提供一个静态的方法，可以传入XML，把XML转换为Java对象
+	public static <T extends InMessage> T convert(String xml) {
+		Class<? extends InMessage> c = getClass(xml);
+		if (c == null) {
+			return null;
+		}
+
+		// 使用JAXB转换
+		@SuppressWarnings("unchecked")
+		T msg = (T) JAXB.unmarshal(new StringReader(xml), c);
+
+		return msg;
 	}
 }
