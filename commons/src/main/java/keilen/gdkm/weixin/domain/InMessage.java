@@ -14,19 +14,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public abstract class InMessage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	@JsonProperty("ToUserName")
+
+	// Xml开头的注解都是JAXB的
+	@XmlElement(name = "ToUserName")
 	private String toUserName;
 
-	@JsonProperty("FromUserName")
+	@XmlElement(name = "FromUserName")
 	private String fromUserName;
 
-	@JsonProperty("CreateTime")
+	@XmlElement(name = "CreateTime")
 	private long createTime;
 
-	@JsonProperty("MsgType")
+	@XmlElement(name = "MsgType")
 	private String msgType;
 
-	@JsonProperty("MsgId")
+	@XmlElement(name = "MsgId")
 	private Long msgId;
 
 	public String getToUserName() {

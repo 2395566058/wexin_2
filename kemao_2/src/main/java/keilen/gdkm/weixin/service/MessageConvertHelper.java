@@ -42,7 +42,6 @@ public class MessageConvertHelper {
 		if (c == null) {
 			return null;
 		}
-
 		// 使用JAXB转换
 		@SuppressWarnings("unchecked")
 		T msg = (T) JAXB.unmarshal(new StringReader(xml), c);

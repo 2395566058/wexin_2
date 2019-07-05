@@ -22,12 +22,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class User {
 
 	public static enum Status {
+		/**
+		 * 关注状态
+		 */
 		IS_SUBSCRIBE,
+		/**
+		 * 取消关注状态
+		 */
 		IS_UNSUBSCRIBE;
 	}
 
 	@Id
 	@Column(length = 36)
+	// 使用UUID2算法生成主键的值，分布式系统里面不能使用自增长作为主键值
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(generator = "uuid2")
 	private String id;
