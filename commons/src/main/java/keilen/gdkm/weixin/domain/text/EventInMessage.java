@@ -17,9 +17,9 @@ public class EventInMessage extends InMessage {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@JsonProperty("Event")
+	@XmlElement(name = "Event")
 	private String event;
-	@JsonProperty("EventKey")
+	@XmlElement(name = "EventKey")
 	private String eventKey;
 
 	public String getEvent() {
@@ -46,3 +46,4 @@ public class EventInMessage extends InMessage {
 	}
 
 }
+
