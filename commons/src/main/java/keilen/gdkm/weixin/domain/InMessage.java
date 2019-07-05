@@ -16,19 +16,19 @@ public abstract class InMessage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// Xml开头的注解都是JAXB的
-	@XmlElement(name = "ToUserName")
+	@JsonProperty("ToUserName")
 	private String toUserName;
 
-	@XmlElement(name = "FromUserName")
+	@JsonProperty("FromUserName")
 	private String fromUserName;
 
-	@XmlElement(name = "CreateTime")
+	@JsonProperty("CreateTime")
 	private long createTime;
 
-	@XmlElement(name = "MsgType")
+	@JsonProperty("MsgType")
 	private String msgType;
 
-	@XmlElement(name = "MsgId")
+	@JsonProperty("MsgId")
 	private Long msgId;
 
 	public String getToUserName() {
