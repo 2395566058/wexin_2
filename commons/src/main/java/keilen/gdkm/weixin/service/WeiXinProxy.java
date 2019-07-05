@@ -32,7 +32,7 @@ public class WeiXinProxy {
 
 		String accessToken = accessTokenManager.getToken(account);
 
-		String url = "https://api.weixin.qq.com/cgi-bin/user/info" + "?access_token=" + accessToken + "&openid="
+		String url = "https://api.weixin.qq.com/cgi-bin/user/info" + "?scope=snsapi_userinfo&access_token=" + accessToken + "&openid="
 				+ openId + "&lang=zh_CN";
 		HttpRequest request = HttpRequest.newBuilder(URI.create(url)).GET().build();
 		try {
