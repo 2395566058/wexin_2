@@ -34,6 +34,7 @@ public class WeiXinProxy {
 
 		String url = "https://api.weixin.qq.com/cgi-bin/user/info" + "?scope=snsapi_userinfo&access_token=" + accessToken + "&openid="
 				+ openId + "&lang=zh_CN";
+		LOG.trace("调用远程接口：\n{}", url);
 		HttpRequest request = HttpRequest.newBuilder(URI.create(url)).GET().build();
 		try {
 			HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString(Charset.forName("UTF-8")));
