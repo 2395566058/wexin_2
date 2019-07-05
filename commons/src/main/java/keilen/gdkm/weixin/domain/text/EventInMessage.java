@@ -18,8 +18,10 @@ public class EventInMessage extends InMessage {
 	 */
 	private static final long serialVersionUID = 1L;
 	@XmlElement(name = "Event")
+	@JsonProperty("Event")
 	private String event;
 	@XmlElement(name = "EventKey")
+	@JsonProperty("EventKey")
 	private String eventKey;
 
 	public String getEvent() {
