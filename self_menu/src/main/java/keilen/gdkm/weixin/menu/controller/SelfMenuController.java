@@ -13,24 +13,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/kemao/menu")
 public class SelfMenuController {
 
 	@Autowired
 	private SelfMenuService menuService;
 
-	@GetMapping
+	@RequestMapping(value="/kemao/menu",method=RequestMethod.GET)
 	public ModelAndView index() {
 		return new ModelAndView("/WEB-INF/views/menu/index.jsp");
 	}
 
-	@GetMapping(produces = "application/json")
+	@RequestMapping(value="/kemao/menu",method=RequestMethod.GET,produces="application/json")
 	@ResponseBody
 	public SelfMenu data() {
 		return menuService.getMenu();
 	}
 
-	@PostMapping
+	@RequestMapping(value="/kemao/menu",method=RequestMethod.POST)
 	@ResponseBody
 	public String save(@RequestBody SelfMenu selfMenu) {
 		this.menuService.save(selfMenu);
