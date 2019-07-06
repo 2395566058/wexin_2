@@ -11,37 +11,8 @@ function start(){
 		            "key": null,
 		            "show": false,
 		            "active": false,
-		            "subMenus": [
-		                {
-		                	"id": null,
-		                    "type": "view",
-		                    "url": null,
-		                    "mediaId": null,
-		                    "key": null,
-		                    "name": "搜索",
-		                    "active": false,
-		                    "url": "http://www.soso.com/"
-		                }, {
-		                	"id": null,
-		                    "type": "miniprogram",
-		                    "url": null,
-		                    "mediaId": null,
-		                    "key": null,
-		                    "name": "wxa",
-		                    "active": false,
-		                    "url": "http://mp.weixin.qq.com",
-		                    "appid": "wx286b93c14bbf93aa",
-		                    "pagePath": "pages/lunar/index"
-		                }, {
-		                	"id": null,
-		                    "type": "click",
-		                    "url": null,
-		                    "mediaId": null,
-		                    "active": false,
-		                    "name": "赞一下我们",
-		                    "key": "V1001_GOOD"
-		                }]
-		        },//
+		            "subMenus": []
+		        },
 		        {
 		        	"id": null,
 		            "name": "发图",
@@ -51,32 +22,7 @@ function start(){
 		            "key": null,
 		            "show": false,
 		            "active": false,
-		            "subMenus": [
-		                {
-		                	"id": null,
-		                    "type": "pic_sysphoto",
-		                    "url": null,
-		                    "mediaId": null,
-		                    "active": false,
-		                    "name": "系统拍照发图",
-		                    "key": "rselfmenu_1_0"
-		                }, {
-		                	"id": null,
-		                    "type": "pic_photo_or_album",
-		                    "url": null,
-		                    "mediaId": null,
-		                    "active": false,
-		                    "name": "拍照或者相册发图",
-		                    "key": "rselfmenu_1_1"
-		                }, {
-		                	"id": null,
-		                    "type": "pic_weixin",
-		                    "url": null,
-		                    "mediaId": null,
-		                    "active": false,
-		                    "name": "微信相册发图",
-		                    "key": "rselfmenu_1_2"
-		                }]
+		            "subMenus": []
 		        }]
 		};
 		initMenus();
@@ -159,7 +105,7 @@ function initMenus(){
 function saveMenus(){
 	let json = JSON.stringify(menuData);
 	$.ajax({
-		url: "",
+		url: "/kemao/menu",
 		method: "post",
 		contentType: "application/json; charset=utf-8",
 		data: json,
@@ -172,6 +118,5 @@ function saveMenus(){
         }
 	});
 }
-
 
 

@@ -27,7 +27,7 @@ public class DebitController {
 			request.setAttribute("debitList", debitList, WebRequest.SCOPE_SESSION);
 		}
 		libraryService.add(id, debitList);
-		return "redirect:/kemao_2/library/debit/list";
+		return "redirect:/kemao/library/debit/list";
 	}
 
 	@RequestMapping("list")
@@ -38,6 +38,6 @@ public class DebitController {
 	public String remove(@PathVariable("id") String id,
 			@SessionAttribute(name = "debitList") DebitList debitList) {
 		this.libraryService.remove(id, debitList);
-		return "redirect:/kemao_2/library/debit/list";
+		return "redirect:/kemao/library/debit/list";
 	}
 }

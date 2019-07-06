@@ -91,7 +91,6 @@ public class SelfMenuServiceImpl implements SelfMenuService {
 				});
 			}
 		});
-
 		try {
 			String json = mapper.writeValueAsString(buttonNode);
 			this.weiXinProxy.createMenu(json);
