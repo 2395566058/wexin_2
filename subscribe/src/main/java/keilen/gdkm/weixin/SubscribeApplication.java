@@ -3,6 +3,8 @@ package keilen.gdkm.weixin;
 import keilen.gdkm.weixin.domain.InMessage;
 import keilen.gdkm.weixin.domain.text.EventInMessage;
 import keilen.gdkm.weixin.processors.EventMessageProcessor;
+import keilen.gdkm.weixin.processors.SubscribeEventMessageProcessor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -48,14 +50,10 @@ public class SubscribeApplication implements CommandLineRunner, DisposableBean, 
 
 	public void handle(EventInMessage msg) {
 		LOG.trace("处理信息： {}", msg);
-		String id = msg.getEvent().toLowerCase() + "MessageProcessor";
-		LOG.trace("调用类： {}", id);
 		try {
-			EventMessageProcessor mp = (EventMessageProcessor) ctx.getBean(id);
+			EventMessageProcessor mp = new SubscribeEventMessageProcessor();
 			if (mp != null) {
 				mp.onMessage(msg);
-			} else {
-				LOG.error("利用Bean的ID {} 不能找到一个事件消息处理器!", id);
 			}
 		} catch (NoSuchBeanDefinitionException e) {
 			LOG.trace("当前模块不适合处理 {} 消息，没有对应的处理器实现", msg.getEvent());
