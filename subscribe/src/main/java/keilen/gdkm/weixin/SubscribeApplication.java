@@ -27,7 +27,7 @@ import keilen.gdkm.weixin.domain.text.EventInMessage;
 import keilen.gdkm.weixin.processors.EventMessageProcessor;
 
 @SpringBootApplication
-@ComponentScan("com.gdkm")
+@ComponentScan("keilen.gdkm")
 public class SubscribeApplication implements CommonsConfig, CommandLineRunner, DisposableBean, ApplicationContextAware {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SubscribeApplication.class);
