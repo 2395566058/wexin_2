@@ -26,7 +26,6 @@ public class SubscribeEventMessageProcessor implements EventMessageProcessor {
 		LOG.trace("关注消息处理器: " + msg);
 		String account = msg.getToUserName();
 		String openId = msg.getFromUserName();
-		LOG.trace("是否为空: " + (userRepository == null));
 		User user = userRepository.findByOpenId(openId);
 		if (user == null || user.getStatus() != User.Status.IS_SUBSCRIBE) {
 			User wxUser = weiXinProxy.getUser(account, openId);

@@ -1,10 +1,5 @@
 package keilen.gdkm.weixin;
 
-import keilen.gdkm.weixin.domain.InMessage;
-import keilen.gdkm.weixin.domain.text.EventInMessage;
-import keilen.gdkm.weixin.processors.EventMessageProcessor;
-import keilen.gdkm.weixin.processors.SubscribeEventMessageProcessor;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -27,9 +22,13 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.Topic;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 
+import keilen.gdkm.weixin.domain.InMessage;
+import keilen.gdkm.weixin.domain.text.EventInMessage;
+import keilen.gdkm.weixin.processors.EventMessageProcessor;
+
 @SpringBootApplication
-@ComponentScan("keilen.gdkm")
-public class SubscribeApplication implements CommandLineRunner, DisposableBean, ApplicationContextAware, CommonsConfig {
+@ComponentScan("com.gdkm")
+public class SubscribeApplication implements CommonsConfig, CommandLineRunner, DisposableBean, ApplicationContextAware {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SubscribeApplication.class);
 
@@ -41,19 +40,24 @@ public class SubscribeApplication implements CommandLineRunner, DisposableBean, 
 	}
 
 	@Bean
-	public MessageListener messageListener(
-			@Autowired @Qualifier("inMessageTemplate") RedisTemplate<String, ? extends InMessage> inMessageTemplate) {
+	public MessageListener messageListener(//
+			@Autowired //
+			@Qualifier("inMessageTemplate") //
+			RedisTemplate<String, ? extends InMessage> inMessageTemplate) {
 		MessageListenerAdapter adapter = new MessageListenerAdapter(this, "handle");
 		adapter.setSerializer(inMessageTemplate.getValueSerializer());
-		return adapter;
+		return (MessageListener) adapter;
 	};
 
 	public void handle(EventInMessage msg) {
 		LOG.trace("处理信息： {}", msg);
+		String id = msg.getEvent().toLowerCase() + "MessageProcessor";
 		try {
-			EventMessageProcessor mp = new SubscribeEventMessageProcessor();
+			EventMessageProcessor mp = (EventMessageProcessor) ctx.getBean(id);
 			if (mp != null) {
 				mp.onMessage(msg);
+			} else {
+				LOG.error("利用Bean的ID {} 不能找到一个事件消息处理器!", id);
 			}
 		} catch (NoSuchBeanDefinitionException e) {
 			LOG.trace("当前模块不适合处理 {} 消息，没有对应的处理器实现", msg.getEvent());
@@ -62,19 +66,21 @@ public class SubscribeApplication implements CommandLineRunner, DisposableBean, 
 		}
 	}
 
+	public static void main(String[] args) throws InterruptedException {
+
+		SpringApplication.run(SubscribeApplication.class, args);
+	}
+
 	@Bean
-	public RedisMessageListenerContainer messageListenerContainer(@Autowired RedisConnectionFactory connectionFactory,
+	public RedisMessageListenerContainer messageListenerContainer(//
+			@Autowired RedisConnectionFactory connectionFactory, //
 			@Autowired MessageListener messageListener) {
 		RedisMessageListenerContainer c = new RedisMessageListenerContainer();
 		c.setConnectionFactory(connectionFactory);
-		Topic topic = new ChannelTopic("kemao_2_event");
-
+		Topic topic = new ChannelTopic("weixin_event");
 		c.addMessageListener(messageListener, topic);
 
 		return c;
 	}
 
-	public static void main(String[] args) throws InterruptedException {
-		SpringApplication.run(SubscribeApplication.class, args);
-	}
 }
