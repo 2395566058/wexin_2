@@ -182,7 +182,6 @@ function saveMenus(){
 		method: "post",
 		contentType: "application/json",
 		data: json,
-		dataType:"json",
 		success: function (responseData) {
             console.log(responseData);
         },

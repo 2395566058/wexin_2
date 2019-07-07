@@ -50,6 +50,7 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Override
 	public void remove(String id, DebitList debitList) {
-		debitList.getBooks().stream().filter(book -> book.getId().equals(id)).findFirst().ifPresent(debitList.getBooks()::remove);
+		debitList.getBooks().stream().filter(book -> book.getId().equals(id)).findFirst()
+				.ifPresent(debitList.getBooks()::remove);
 	}
 }

@@ -17,11 +17,8 @@ public class IndexController {
 	private LibraryService libraryService;
 
 	@RequestMapping
-	public String index(
-			@RequestParam(name = "keyword", required = false) String keyword,
-			@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
-			Model model
-	) {
+	public String index(@RequestParam(name = "keyword", required = false) String keyword,
+			@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber, Model model) {
 		Page<Book> page = this.libraryService.search(keyword, pageNumber);
 		model.addAttribute("page", page);
 		return "/WEB-INF/views/library/index.jsp";

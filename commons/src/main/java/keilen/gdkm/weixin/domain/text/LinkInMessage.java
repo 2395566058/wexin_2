@@ -8,14 +8,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import keilen.gdkm.weixin.domain.InMessage;
 
 @XmlRootElement(name = "xml")
-@XmlAccessorType(XmlAccessType.FIELD) // 字段获取信息
+@XmlAccessorType(XmlAccessType.FIELD)
 public class LinkInMessage extends InMessage {
 	@XmlElement(name = "Title")
-	private String title; // 消息标题
+	private String title;
 	@XmlElement(name = "Description")
-	private String description; // 消息描述
+	private String description;
 	@XmlElement(name = "Url")
-	private String url; // 消息链接
+	private String url;
 
 	public String getTitle() {
 		return title;

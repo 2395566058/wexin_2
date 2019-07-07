@@ -19,9 +19,9 @@ public class Book {
 	private String id;
 	private String name;
 	private String description;
-	private String image;// 封面图片名称
-	private int storage;// 库存量
-	private boolean disabled;// 是否已经被停用
+	private String image;
+	private int storage;
+	private boolean disabled;
 
 	public String getId() {
 		return id;

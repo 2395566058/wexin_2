@@ -17,8 +17,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity // 表示一个JPA的实体
-@Table(name = "wx_user") // 指定表名
+@Entity
+@Table(name = "wx_user")
 public class User {
 
 	public static enum Status {
@@ -34,7 +34,6 @@ public class User {
 
 	@Id
 	@Column(length = 36)
-	// 使用UUID2算法生成主键的值，分布式系统里面不能使用自增长作为主键值
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(generator = "uuid2")
 	private String id;
@@ -82,7 +81,7 @@ public class User {
 	private String groupId;
 	/** 用户被打上的标签ID列表 */
 	@JsonProperty("tagid_list")
-	@Transient // 暂时不要保存到数据库
+	@Transient
 	private String[] tagIdList;
 	/**
 	 * 返回用户关注的渠道来源，ADD_SCENE_SEARCH 公众号搜索，ADD_SCENE_ACCOUNT_MIGRATION

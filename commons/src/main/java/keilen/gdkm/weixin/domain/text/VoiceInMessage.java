@@ -8,12 +8,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import keilen.gdkm.weixin.domain.InMessage;
 
 @XmlRootElement(name = "xml")
-@XmlAccessorType(XmlAccessType.FIELD) // 字段获取信息
+@XmlAccessorType(XmlAccessType.FIELD)
 public class VoiceInMessage extends InMessage {
 	@XmlElement(name = "MediaId")
-	private String mediaId; // 视频消息媒体id，可以调用获取临时素材接口拉取数据。
+	private String mediaId;
 	@XmlElement(name = "Format")
-	private String format; // 语音格式，如amr，speex等
+	private String format;
 	public String getMediaId() {
 		return mediaId;
 	}

@@ -4,18 +4,16 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @XmlRootElement(name = "xml")
-@XmlAccessorType(XmlAccessType.FIELD) // 从字段获取配置信息
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class InMessage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	// Xml开头的注解都是JAXB的
+	
 	@JsonProperty("ToUserName")
 	private String toUserName;
 

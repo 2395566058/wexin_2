@@ -12,7 +12,5 @@ public interface BookRepository extends JpaRepository<Book, String> {
 	Page<Book> findByDisabledFalse(Pageable pageable);
 
 	Page<Book> findByDisabledFalseAndNameContaining(String keyword, Pageable pageable);
-	
-	
 
 }

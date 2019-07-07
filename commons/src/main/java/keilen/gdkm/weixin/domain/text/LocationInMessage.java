@@ -8,16 +8,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import keilen.gdkm.weixin.domain.InMessage;
 
 @XmlRootElement(name = "xml")
-@XmlAccessorType(XmlAccessType.FIELD) // 字段获取信息
+@XmlAccessorType(XmlAccessType.FIELD)
 public class LocationInMessage extends InMessage {
 	@XmlElement(name = "Location_X")
-	private String location_X; // 地理位置维度
+	private String location_X;
 	@XmlElement(name = "Location_Y")
-	private String location_Y; // 地理位置经度
+	private String location_Y;
 	@XmlElement(name = "Scale")
-	private String scale; // 地图缩放大小
+	private String scale;
 	@XmlElement(name = "Label")
-	private String label; // 地理位置信息
+	private String label;
 
 	public String getLocation_X() {
 		return location_X;
@@ -58,5 +58,5 @@ public class LocationInMessage extends InMessage {
 				+ getFromUserName() + ", getCreateTime()=" + getCreateTime() + ", getMsgType()=" + getMsgType()
 				+ ", getMsgId()=" + getMsgId() + "]";
 	}
-	
+
 }

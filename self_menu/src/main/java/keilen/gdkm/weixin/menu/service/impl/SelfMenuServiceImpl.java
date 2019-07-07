@@ -31,19 +31,15 @@ public class SelfMenuServiceImpl implements SelfMenuService {
 	public SelfMenu getMenu() {
 		List<SelfMenu> all = this.menuRepository.findAll();
 		if (all.isEmpty()) {
-			// 返回一个新的空对象给页面
 			return new SelfMenu();
 		}
-		// 不为空则直接返回第一个菜单，不考虑多个菜单的问题！
 		return all.get(0);
 	}
 
 	@Override
 	public void save(SelfMenu selfMenu) {
-		// 1.如果有二级菜单，需要把菜单里面除了name属性之外的其他所有属性都清空！
 		selfMenu.getSubMenus().forEach(b1 -> {
 			if (!b1.getSubMenus().isEmpty()) {
-				// 有下一级
 				b1.setAppId(null);
 				b1.setKey(null);
 				b1.setMediaId(null);
@@ -52,48 +48,31 @@ public class SelfMenuServiceImpl implements SelfMenuService {
 				b1.setUrl(null);
 			}
 		});
-
-		// 3.把菜单转换为JSON字符串，调用WeiXinProxy对象发送数据到公众号
-		// 由于转换的规则比较复杂，所以只能手工转换！
 		ObjectMapper mapper = new ObjectMapper();
-		// 创建一个JSON的节点
-		// {}
 		ObjectNode buttonNode = mapper.createObjectNode();
 		ArrayNode buttonsNode = mapper.createArrayNode();
 
-		// { 'button' : [] }
 		buttonNode.set("button", buttonsNode);
 		selfMenu.getSubMenus().forEach(b1 -> {
-			// 处理一级菜单
-			// 如果没有二级菜单，需要type、key等属性，否则只需要name属性
 			ObjectNode menu1 = mapper.createObjectNode();
-			buttonsNode.add(menu1);// 加入第一级菜单
+			buttonsNode.add(menu1);
 			menu1.put("name", b1.getName());
 			if (b1.getSubMenus().isEmpty()) {
-				// 没有下一级，需要有type、key等各种属性
-
 				setValues(menu1, b1);
 			} else {
-				// 有下一级,增加一个sub_button数组
 				ArrayNode subButtons = mapper.createArrayNode();
 				menu1.set("sub_button", subButtons);
-
 				b1.getSubMenus().forEach(new Consumer<MenuButton>() {
-
 					@Override
 					public void accept(MenuButton b2) {
-
 						ObjectNode menu2 = mapper.createObjectNode();
-						subButtons.add(menu2);// 加入第二级菜单
+						subButtons.add(menu2);
 						menu2.put("name", b2.getName());
-
-						// 处理key、type等属性
 						setValues(menu2, b2);
 					}
 				});
 			}
 		});
-
 		try {
 			String json = mapper.writeValueAsString(buttonNode);
 			this.weiXinProxy.createMenu(json);
@@ -104,7 +83,6 @@ public class SelfMenuServiceImpl implements SelfMenuService {
 
 	private void setValues(ObjectNode menu, MenuButton b) {
 		menu.put("type", b.getType());
-
 		if (b.getType().equals("miniprogram")) {
 			menu.put("appid", b.getAppId());
 			menu.put("url", b.getUrl());

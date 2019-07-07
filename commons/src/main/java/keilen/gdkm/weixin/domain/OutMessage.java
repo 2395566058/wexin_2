@@ -2,7 +2,6 @@ package keilen.gdkm.weixin.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-// 通过客服接口，主动发送给微信用户的消息
 public abstract class OutMessage {
 
 	@JsonProperty("touser")
