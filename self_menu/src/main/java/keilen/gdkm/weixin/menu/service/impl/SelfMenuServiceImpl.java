@@ -1,12 +1,8 @@
 package keilen.gdkm.weixin.menu.service.impl;
 
 import java.util.List;
+import java.util.function.Consumer;
 
-import keilen.gdkm.weixin.menu.domain.MenuButton;
-import keilen.gdkm.weixin.menu.domain.SelfMenu;
-import keilen.gdkm.weixin.menu.repository.SelfMenuRepository;
-import keilen.gdkm.weixin.menu.service.SelfMenuService;
-import keilen.gdkm.weixin.service.WeiXinProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +12,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import keilen.gdkm.weixin.menu.domain.MenuButton;
+import keilen.gdkm.weixin.menu.domain.SelfMenu;
+import keilen.gdkm.weixin.menu.repository.SelfMenuRepository;
+import keilen.gdkm.weixin.menu.service.SelfMenuService;
+import keilen.gdkm.weixin.service.WeiXinProxy;
 
 @Service
 public class SelfMenuServiceImpl implements SelfMenuService {
@@ -52,10 +53,6 @@ public class SelfMenuServiceImpl implements SelfMenuService {
 			}
 		});
 
-		// 2.由于只考虑一组菜单，所以直接删除数据库所有的菜单数据，全部重新插入即可！
-		this.menuRepository.deleteAll();
-		this.menuRepository.save(selfMenu);
-
 		// 3.把菜单转换为JSON字符串，调用WeiXinProxy对象发送数据到公众号
 		// 由于转换的规则比较复杂，所以只能手工转换！
 		ObjectMapper mapper = new ObjectMapper();
@@ -68,7 +65,7 @@ public class SelfMenuServiceImpl implements SelfMenuService {
 		buttonNode.set("button", buttonsNode);
 		selfMenu.getSubMenus().forEach(b1 -> {
 			// 处理一级菜单
-			// 如果没有二级菜单，那么就需要type、key等属性，否则只需要name属性
+			// 如果没有二级菜单，需要type、key等属性，否则只需要name属性
 			ObjectNode menu1 = mapper.createObjectNode();
 			buttonsNode.add(menu1);// 加入第一级菜单
 			menu1.put("name", b1.getName());
@@ -77,20 +74,26 @@ public class SelfMenuServiceImpl implements SelfMenuService {
 
 				setValues(menu1, b1);
 			} else {
-				// 有下一级，只需要那么，然后增加一个sub_button数组
+				// 有下一级,增加一个sub_button数组
 				ArrayNode subButtons = mapper.createArrayNode();
-				// sub_button: []
 				menu1.set("sub_button", subButtons);
-				b1.getSubMenus().forEach(b2 -> {
-					ObjectNode menu2 = mapper.createObjectNode();
-					subButtons.add(menu2);// 加入第二级菜单
-					menu2.put("name", b2.getName());
 
-					// 处理key、type等属性
-					setValues(menu2, b2);
+				b1.getSubMenus().forEach(new Consumer<MenuButton>() {
+
+					@Override
+					public void accept(MenuButton b2) {
+
+						ObjectNode menu2 = mapper.createObjectNode();
+						subButtons.add(menu2);// 加入第二级菜单
+						menu2.put("name", b2.getName());
+
+						// 处理key、type等属性
+						setValues(menu2, b2);
+					}
 				});
 			}
 		});
+
 		try {
 			String json = mapper.writeValueAsString(buttonNode);
 			this.weiXinProxy.createMenu(json);

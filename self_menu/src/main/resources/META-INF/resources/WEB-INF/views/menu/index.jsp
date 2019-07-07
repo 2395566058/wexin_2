@@ -5,16 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <title>菜单管理</title>
-<link rel="stylesheet" href="/kemao_2/menu/css/menu.css"/>
+<link rel="stylesheet" href="/menu/css/menu.css"/>
 </head>
-<body onload="start()">
+<body>
 <div class="main-container">
     <div class="wechat-container">
         <div class="content-container"></div>
         <div class="menus" id="menus">
+        	<!-- 一级菜单 -->
             <div class="menu" v-for="m in subMenus">
                 <div class="sub-menu" v-if="m.show">
                     <ul>
+                    	<!-- 二级菜单的一个个按钮 -->
                         <li v-if="(m.subMenus && m.subMenus.length &lt 7) || (!m.subMenus)"
                             @click="addNewButton(m, $event)">+
                         </li>
@@ -25,6 +27,7 @@
                     </ul>
                     <div class="down-arrow"></div>
                 </div>
+                <!-- 一级菜单的按钮 -->
                 <div class="button"
                      v-on:click="toggleSubMenus(m)"
                      @click="activeButton(m, $event); selectMenu()"
@@ -131,9 +134,9 @@
 	<button onclick="saveMenus()">保存</button>
 </div>
 
-<script type="text/javascript" src="/kemao_2/menu/js/jquery.js"></script>
-<script type="text/javascript" src="/kemao_2/menu/js/vue.js"></script>
-<script type="text/javascript" src="/kemao_2/menu/js/menu.js"></script>
+<script type="text/javascript" src="/menu/js/jquery.js"></script>
+<script type="text/javascript" src="/menu/js/vue.js"></script>
+<script type="text/javascript" src="/menu/js/menu.js"></script>
 
 </body>
 </html>
