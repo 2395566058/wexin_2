@@ -48,7 +48,7 @@ public class SubscribeApplication implements CommandLineRunner, DisposableBean, 
 
 	public void handle(EventInMessage msg) {
 		LOG.trace("处理信息： {}", msg);
-		String id = msg.getEvent().toLowerCase() + "MessageProcessor";
+		String id = msg.getEvent().toLowerCase() + "EventMessageProcessor";
 		try {
 			EventMessageProcessor mp = (EventMessageProcessor) ctx.getBean(id);
 			if (mp != null) {
