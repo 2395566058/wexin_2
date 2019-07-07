@@ -77,7 +77,7 @@ public class SubscribeApplication implements CommonsConfig, CommandLineRunner, D
 			@Autowired MessageListener messageListener) {
 		RedisMessageListenerContainer c = new RedisMessageListenerContainer();
 		c.setConnectionFactory(connectionFactory);
-		Topic topic = new ChannelTopic("weixin_event");
+		Topic topic = new ChannelTopic("kemao_2_event");
 		c.addMessageListener(messageListener, topic);
 
 		return c;
